@@ -5,6 +5,9 @@ on:
     branches: [ "main", "master" ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Build Unsigned IPA
@@ -46,3 +49,13 @@ jobs:
           name: StockApp-ipa
           path: StockApp.ipa
           retention-days: 14
+
+      - name: Publish to GitHub Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: "StockApp iOS IPA (Latest Build)"
+          body: "แอป iOS (.ipa) สำหรับ http://stock99.xo.je/projects.html?i=1\nดาวน์โหลดไฟล์ StockApp.ipa ด้านล่างแล้วนำไปติดตั้งผ่าน Sideloadly / TrollStore ได้ทันที"
+          files: StockApp.ipa
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
